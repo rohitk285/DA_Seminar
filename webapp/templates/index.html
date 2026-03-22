@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Graph Analysis App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">Graph Analysis</span>
+      </div>
+    </nav>
+
+    <main class="container my-3 flex-grow-1">
+      <div class="row g-3">
+        <div class="col-12 col-md-5">
+          <div class="card p-3">
+            <h5>Input Graph</h5>
+            <label class="form-label">Adjacency (JSON dict or list-of-lists)</label>
+            <textarea id="adjInput" class="form-control" rows="8">{
+  "0": [1,2],
+  "1": [0,2,3],
+  "2": [0,1],
+  "3": [1,4,5,6],
+  "4": [3,5],
+  "5": [3,4,6],
+  "6": [3,5]
+}</textarea>
+
+            <label class="form-label mt-2">Algorithm</label>
+            <select id="algo" class="form-select">
+              <option value="betweenness">Betweenness Centrality</option>
+              <option value="closeness">Closeness Centrality</option>
+              <option value="jaccard">Jaccard Coefficient (JAC)</option>
+              <option value="preferential">Preferential Attachment (PAC)</option>
+              <option value="girvan">Girvan-Newman</option>
+            </select>
+
+            <div class="d-grid mt-3">
+              <button id="runBtn" class="btn btn-primary">Compute & Visualize</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-7">
+          <div class="card p-2">
+            <h5>Graph Visualization</h5>
+            <div id="graph" style="width:100%;height:420px;"></div>
+            <h6 class="mt-2">Result</h6>
+            <pre id="result" class="bg-light p-2" style="height:160px;overflow:auto;"></pre>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+  </body>
+  </html>

@@ -1,0 +1,6 @@
+body { font-family: system-ui, Arial, sans-serif; }
+#graph { border: 1px solid #e9ecef; border-radius:6px; }
+textarea { font-family: monospace; font-size: 0.9rem; }
+@media (max-width: 576px) {
+  #graph { height: 360px !important; }
+}
