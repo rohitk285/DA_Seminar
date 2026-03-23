@@ -14,6 +14,7 @@ vector<vector<int>> bfs(vector<vector<int>>& adj, int start, int end){
         int node = path.back();
 
         if(path.size() > mini) continue;
+        
         if(node == end){
             if(path.size() < mini){
                 mini = path.size();

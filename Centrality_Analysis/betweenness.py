@@ -1,75 +1,58 @@
 from collections import deque
 
-def find_all_shortest_paths(graph, start, end):
-    """
-    Find all shortest paths between start and end using BFS.
-    Returns a list of paths.
-    """
-    queue = deque([[start]])
+def bfs(adj, start, end):
     shortest_paths = []
-    shortest_length = float('inf')
+    q = deque([[start]])
+    mini = float('inf')
 
-    while queue:
-        path = queue.popleft()
+    while q:
+        path = q.popleft()
         node = path[-1]
 
-        # Stop exploring longer paths
-        if len(path) > shortest_length:
+        if len(path) > mini:
             continue
 
         if node == end:
-            if len(path) < shortest_length:
-                shortest_length = len(path)
+            if len(path) < mini:
+                mini = len(path)
                 shortest_paths = [path]
-            elif len(path) == shortest_length:
+            elif len(path) == mini:
                 shortest_paths.append(path)
             continue
 
-        for neighbor in graph[node]:
-            if neighbor not in path:   # avoid cycles
-                new_path = path + [neighbor]
-                queue.append(new_path)
+        for adjNode in adj[node]:
+            if adjNode not in path:
+                new_path = path.copy()
+                new_path.append(adjNode)
+                q.append(new_path)
 
     return shortest_paths
 
 
-def betweenness_centrality(graph):
-    nodes = list(graph.keys())
-    bc = {node: 0.0 for node in nodes}
+adj = [[2, 4], [2], [0, 1, 3], [2, 4], [0, 3]]
 
-    n = len(nodes)
+n = len(adj)
 
-    for i in range(n):
-        for j in range(i + 1, n):
-            s = nodes[i]
-            t = nodes[j]
+for i in range(n):
+    betweenness_node_total = 0
 
-            shortest_paths = find_all_shortest_paths(graph, s, t)
-            total_paths = len(shortest_paths)
-
-            if total_paths == 0:
+    for j in range(n):
+        for k in range(j + 1, n):
+            if i == j or i == k:
                 continue
 
-            for path in shortest_paths:
-                # exclude src and trgt
-                for node in path[1:-1]:
-                    bc[node] += 1 / total_paths
+            paths = bfs(adj, j, k)
+            denominator = len(paths)
+            if denominator == 0:
+                continue
 
-    return bc
+            numerator = 0
 
+            for path in paths:
+                if i in path:
+                    numerator += 1
 
-# Example graph
-graph = {
-    'A': ['B', 'E'],
-    'B': ['A', 'C', 'D'],
-    'C': ['B', 'D', 'F'],
-    'D': ['B', 'C'],
-    'E': ['A', 'F'],
-    'F': ['C', 'E']
-}
+            betweenness = numerator / denominator
+            betweenness_node_total += betweenness
 
-result = betweenness_centrality(graph)
-
-print("Betweenness Centrality:")
-for node, value in result.items():
-    print(f"{node}: {value:.2f}")
+    print(f"Betweenness Centrality of node {i} is: {betweenness_node_total}")
